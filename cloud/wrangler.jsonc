@@ -1,0 +1,69 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "riker-transcribe",
+  "main": "src/index.ts",
+  "account_id": "097a730d7d06ad072cf633619d7cd324",
+  "compatibility_date": "2026-10-01",
+  "compatibility_flags": [
+    "nodejs_compat"
+  ],
+  "workers_dev": false,
+  "preview_urls": false,
+  "routes": [
+    {
+      "pattern": "transcribe.nisi.sh",
+      "custom_domain": true
+    }
+  ],
+  "vars": {
+    "PUBLIC_ORIGIN": "https://transcribe.nisi.sh",
+    "ACCESS_TEAM_DOMAIN": "https://nicknisi.cloudflareaccess.com",
+    "ACCESS_AUD": "3a1bcd5abde76d27e1699549f8463cb49cc9e6868320c464f9f78e10295b2c60",
+    "DEVICE_CLIENT_ID": "5df49fad5b924a6fe4e2e8b97882058e.access",
+    "OWNER_EMAIL": "nick@nisi.org",
+    "BUCKET_NAME": "riker-transcribe-audio"
+  },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "riker-transcribe",
+      "database_id": "148c4a46-39c8-4798-a041-645663398b70",
+      "migrations_dir": "migrations"
+    }
+  ],
+  "r2_buckets": [
+    {
+      "binding": "AUDIO",
+      "bucket_name": "riker-transcribe-audio"
+    }
+  ],
+  "queues": {
+    "producers": [
+      {
+        "binding": "JOBS",
+        "queue": "riker-transcribe"
+      }
+    ],
+    "consumers": [
+      {
+        "queue": "riker-transcribe",
+        "max_batch_size": 1,
+        "max_batch_timeout": 1,
+        "max_retries": 3,
+        "max_concurrency": 1,
+        "dead_letter_queue": "riker-transcribe-dlq"
+      }
+    ]
+  },
+  "ai": {
+    "binding": "AI"
+  },
+  "triggers": {
+    "crons": [
+      "*/5 * * * *"
+    ]
+  },
+  "observability": {
+    "enabled": false
+  }
+}

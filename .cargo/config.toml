@@ -1,0 +1,8 @@
+[target.xtensa-esp32s3-espidf]
+linker = "ldproxy"
+rustflags = ["--cfg", "espidf_time64"]
+
+[env]
+MCU = "esp32s3"
+ESP_IDF_VERSION = "v5.4.3"
+ESP_IDF_TOOLS_INSTALL_DIR = "custom:.tools/espressif"

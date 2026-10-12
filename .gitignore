@@ -1,0 +1,13 @@
+/target/
+/.tools/
+/.embuild/
+/.env
+/sdkconfig
+/sdkconfig.old
+/.impeccable/
+/components/M5Unified/
+/components/M5GFX/
+*.bin
+*.elf
+*.log
+__pycache__/

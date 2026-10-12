@@ -1,0 +1,47 @@
+[package]
+name = "riker-badge"
+version = "0.1.0"
+edition = "2021"
+rust-version = "1.88"
+publish = false
+
+[[bin]]
+name = "riker-badge"
+path = "src/main.rs"
+required-features = ["firmware"]
+harness = false
+
+[features]
+default = []
+firmware = []
+
+[dependencies]
+getrandom = "0.2"
+zeroize = "1"
+sha2 = "0.10"
+tailscale-esp32 = { git = "https://github.com/0xdilo/tailscale-esp32", rev = "dbd49fe4018023ba07596e4377496718ef21d6ae" }
+
+[target.'cfg(target_os = "espidf")'.dependencies]
+anyhow = "1"
+embedded-svc = "0.29"
+esp-idf-svc = "0.52.1"
+log = "0.4"
+serde_json = "1"
+
+[build-dependencies]
+embuild = { version = "0.33", features = ["espidf"] }
+
+[profile.release]
+codegen-units = 1
+lto = "fat"
+opt-level = "z"
+panic = "abort"
+strip = "debuginfo"
+
+[package.metadata.esp-idf-sys]
+esp_idf_version = "v5.4.3"
+esp_idf_sdkconfig_defaults = ["sdkconfig.defaults"]
+esp_idf_component_manager = false
+
+[[package.metadata.esp-idf-sys.extra_components]]
+component_dirs = ["components/badge_display", "components/M5Unified", "components/M5GFX"]
